@@ -1,5 +1,5 @@
 module Aula1 where
-    
+
 --ex 2
 
 -- a)
@@ -27,7 +27,7 @@ par l = (head l, last l)
 
 --f)
 par_nomes :: [String] -> (String,String)
-par_nomes l = par l  -- == (head l, last l)
+par_nomes l = (head l, last l)  -- == par l
 
 --g)
 par1 :: ([a],[a]) -> (a,[a])
