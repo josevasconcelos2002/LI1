@@ -36,3 +36,4 @@ par1 (a,b) = (head a, b)
 --h)
 nome :: [String] -> String
 nome l = [head(head l)] ++ "." ++ last l
+       -- (head(head l)) : ('.' : last l)

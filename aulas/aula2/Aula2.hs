@@ -2,6 +2,12 @@ module Aula2 where
 
 import Data.Char
 
+--fact
+fact :: Double -> Double
+fact 0 = 1
+fact n = n * fact(n-1)
+
+
 --1)
 adiciona :: [Int] -> Int -> [Int]
 adiciona [] _ = []
@@ -13,7 +19,7 @@ remove_string [] _ = []
 remove_string (x:xs) c | c == (head(x)) = remove_string xs c
                        | otherwise = x : remove_string xs c
 
---3)
+--3)lista de Strings
 adiciona1 :: [(Int,Int)] -> Int -> [(Int,Int)]
 adiciona1 [] _ = []
 adiciona1 (x:xs) v =  ((fst(x)+v,snd(x)) : (adiciona1 (xs) v))
@@ -62,7 +68,22 @@ posicao (Pos n (a,b)) (x:xs) | x == N = posicao (Pos n (a,b+1)) xs
 
 --b)
 posicoesM :: [PosicaoPessoa] -> Movimento -> [PosicaoPessoa]
+posicoesM [] _ = []
 posicoesM ((Pos n (a,b)):h) m | m == N = (Pos n (a,b+1)) : posicoesM h m 
                               | m == S = (Pos n (a,b-1)) : posicoesM h m
                               | m == E = (Pos n (a+1,b)) : posicoesM h m
                               | m == W = (Pos n (a-1,b)) : posicoesM h m
+
+--c)
+posicoesMs :: [PosicaoPessoa] -> Movimentos -> [PosicaoPessoa]
+posicoesMs [] _ = []
+posicoesMs ((Pos n (a,b)):h) (x:xs) = posicao (Pos n (a,b)) (x:xs) : posicoesMs h (x:xs)
+
+--d)
+pessoasNorte :: [PosicaoPessoa] -> [Nome]
+pessoasNorte [] = []
+pessoasNorte [Pos n (a,b)] = [n]
+pessoasNorte [(Pos n (a,b)),(Pos c (d,e))] | b == e = [n,c]
+pessoasNorte ((Pos n (a,b)):(Pos c (d,e)):h) | b > e = pessoasNorte((Pos n (a,b)):h)
+                                             | b < e = pessoasNorte((Pos c (d,e)):h)pessoasNorte ((Pos n (a,b)):(Pos c (d,e)):h)
+                                             | otherwise = pessoasNorte ((Pos (n++c) (a,b)):h)
