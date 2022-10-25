@@ -17,7 +17,8 @@ mapaVálido m | mapaVálido_aux m = True
 
 
 mapaVálido_aux :: Mapa -> Bool
-mapaVálido_aux m | (terreno_proprio m &&  objs_length m && has_nenhum m) = True
+mapaVálido_aux m | (terreno_proprio m &&  objs_length m && has_nenhum m
+                   && valida_carro m && valida_tronco m) = True
                  | otherwise = False
 
 {- | A função 'terreno_proprio' verifica se não existem obstáculos
@@ -61,6 +62,30 @@ has_nenhum :: Mapa -> Bool
 has_nenhum (Mapa _ []) = True
 has_nenhum (Mapa l ((t,(obj:objs)):h)) | (obj == Nenhum) = has_nenhum (Mapa l h)
                                        | otherwise = has_nenhum (Mapa l ((t,(objs)):h))
+
+conta_tronco :: [Obstáculo] -> Int
+conta_tronco [] = 0
+conta_tronco (obj:objs) | (obj == Tronco) = 1+conta_tronco objs
+
+
+conta_carro :: [Obstáculo] -> Int
+conta_carro [] = 0
+conta_carro (obj:objs) | (obj == Carro) = 1+conta_carro objs
+
+valida_carro :: Mapa -> Bool
+valida_carro (Mapa _ []) = True
+valida_carro (Mapa l ((t,(obj:objs)):h))  | (((l-conta_nenhum (obj:objs))/(conta_carro(obj:objs))) <= 3) = valida_carro (Mapa l h)
+                                          | otherwise = False
+
+valida_tronco :: Mapa -> Bool
+valida_tronco (Mapa _ []) = True
+valida_tronco (Mapa l ((t,(obj:objs)):h)) | (((l-conta_nenhum (obj:objs))/(conta_tronco(obj:objs))) <= 5 )= valida_tronco (Mapa l h)
+                                          | otherwise = False
+
+
+conta_nenhum :: [Obstáculo] -> Int
+conta_nenhum [] = 0
+conta_nenhum (obj:objs) | (obj == Nenhum) = 1+conta_nenhum objs
 
 is_rio :: Mapa -> Bool
 is_rio (Mapa _ []) = True
